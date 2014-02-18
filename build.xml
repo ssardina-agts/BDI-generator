@@ -1,0 +1,51 @@
+<project>
+	
+	<property name="version"     		value="1.0"/>
+	
+	<property name="src.dir"     		value="src"/>
+	
+	<property name="build.dir"  		value="build"/>
+	<property name="build.bin.dir" 		value="${build.dir}"/>
+	<property name="build.src.dir" 		value="${build.dir}/src"/>
+	
+	<property name="jar.name"  			value="AgentTemplates.jar"/>
+	<property name="dist.dir"  			value="dist"/>
+	
+	<property name="lib.dir"  			value="lib"/>
+	<property name="log4j.lib"			value="${lib.dir}/log4j-1.2.16.jar" />
+	<property name="jack.lib"			value="${lib.dir}/jack.jar" />
+	<property name="coverage.lib"		value="${lib.dir}/CoverageAgent.jar" />
+	<property name="utils.lib"			value="${lib.dir}/Utils.jar" />
+	
+	<path id="classpath">
+		<pathelement location="${log4j.lib}"/>
+		<pathelement location="${jack.lib}"/>
+		<pathelement location="${coverage.lib}"/>
+		<pathelement location="${utils.lib}"/>
+	</path>
+	
+	<target name="clean">
+		<delete dir="${dist.dir}"/>
+		<delete dir="${build.dir}"/>
+	</target>
+
+	<target name="build">
+		<mkdir dir="${build.bin.dir}"/>
+		<javac srcdir="${src.dir}" destdir="${build.bin.dir}" classpathref="classpath" includeantruntime="false" debug="on" />	
+		
+		<mkdir dir="${build.src.dir}"/>
+		<copy todir="${build.src.dir}">
+		    <fileset dir="${src.dir}" />
+		</copy>
+	</target>
+
+	<target name="dist" depends="build">
+		<mkdir dir="${dist.dir}"/>
+		<jar destfile="${dist.dir}/${jar.name}" basedir="${build.dir}" />
+	</target>
+
+	<target name="clean-build" depends="clean,dist">
+		<delete dir="${build.dir}" />
+	</target>
+
+</project>
