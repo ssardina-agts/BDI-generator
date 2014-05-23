@@ -1,6 +1,6 @@
 <project>
 	
-	<property name="version"     		value="1.0"/>
+	<property name="version"     		value="0.1"/>
 	
 	<property name="src.dir"     		value="src"/>
 	
@@ -14,13 +14,11 @@
 	<property name="lib.dir"  			value="lib"/>
 	<property name="log4j.lib"			value="${lib.dir}/log4j-1.2.16.jar" />
 	<property name="jack.lib"			value="${lib.dir}/jack.jar" />
-	<property name="coverage.lib"		value="${lib.dir}/CoverageAgent.jar" />
 	<property name="utils.lib"			value="${lib.dir}/Utils.jar" />
 	
 	<path id="classpath">
 		<pathelement location="${log4j.lib}"/>
 		<pathelement location="${jack.lib}"/>
-		<pathelement location="${coverage.lib}"/>
 		<pathelement location="${utils.lib}"/>
 	</path>
 	
