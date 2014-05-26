@@ -29,6 +29,7 @@ public class BasicBeliefSetGenerator extends BeliefSetGenerator {
 		return config;
 	}
 	
+	@Override
 	public BeliefSetTemplate getBeliefSet(ClassName cn) {
 		BeliefSetWorldType worldType = BeliefSetWorldType.CLOSED_WORLD;
 

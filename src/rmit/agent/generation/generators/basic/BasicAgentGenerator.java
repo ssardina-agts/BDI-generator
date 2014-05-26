@@ -39,9 +39,9 @@ public class BasicAgentGenerator extends AgentGenerator {
 	public BasicAgentGenerator(Path configFile) {
 		jackWriter = new JackWriter();
 		this.configFile = configFile;
-		config = TemplateGeneratorConfig.getInstance(configFile, AgentGeneratorConfig.KEY_CLASS);
-		gpfConfig = TemplateGeneratorConfig.getInstance(configFile, GPFGeneratorConfig.KEY_CLASS);
-		bsConfig = TemplateGeneratorConfig.getInstance(configFile, BeliefSetGeneratorConfig.KEY_CLASS);
+		config 		= TemplateGeneratorConfig.getInstance(configFile, AgentGeneratorConfig.KEY_CLASS);
+		gpfConfig 	= TemplateGeneratorConfig.getInstance(configFile, GPFGeneratorConfig.KEY_CLASS);
+		bsConfig 	= TemplateGeneratorConfig.getInstance(configFile, BeliefSetGeneratorConfig.KEY_CLASS);
 		
 		bsGenerator = new BasicBeliefSetGenerator(bsConfig);
 		gpfGenerator = new BasicGPFGenerator(gpfConfig, bsGenerator, config.getPackageName());
