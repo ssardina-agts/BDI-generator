@@ -55,6 +55,7 @@ public class AgentCompiler {
 		
 		String[] packageDirPath = packageName.split("\\.");
 		Path topLevelPath = Paths.get(jackDir.toString(), packageDirPath);
+		System.out.println(topLevelPath);
 		for (File subDir : topLevelPath.toFile().listFiles()) {
 			if (subDir.isDirectory()) {
 //				CompilerTools.compileJack(Paths.get(subDir.toURI()), javaDir, true);

@@ -26,7 +26,7 @@ public class CompilerTools {
 
 	private static final Logger logger = Logger.getLogger(CompilerTools.class);
 	
-	private static final String CP_PATH_DIVIDER = ";";
+	private static final String CP_PATH_DIVIDER = ";"; //replace with System.getProperty("path.separator"); ???
 	
 	private static final File LIB_PATH = Paths.get(System.getProperty("user.dir"), "lib").toFile();
 	
@@ -135,10 +135,11 @@ public class CompilerTools {
 			
 			File pwd = directory.toFile();			
 			ProcessBuilder pb = new ProcessBuilder();
-			String[] command = {"jar", "cf0", jarFile.toString(), "*"};
+			pb.directory(pwd);
+			String[] command = {"jar", "cvf0", jarFile.toString(), "."};
 			pb.command(command);
 			pb.redirectErrorStream(true);
-			pb.directory(pwd);
+			
 			Process p = pb.start();
 			BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			String inputLine;
