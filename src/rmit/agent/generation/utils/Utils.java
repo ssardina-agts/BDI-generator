@@ -1,4 +1,4 @@
-package rmit.utils;
+package rmit.agent.generation.utils;
 
 import java.lang.reflect.Array;
 import java.util.Collection;
@@ -8,6 +8,14 @@ public class Utils {
 	private Utils() {
 	}
 
+	public static String format(int num) {
+		return String.format("%03d", num);
+	}
+	
+	public static int getRandomInt(int min, int max) {
+		return (int) ((Math.random() * ((max+1)-min)) + min);
+	}
+	
 	public static <T> String arrayToString(T[] arr) {
 
 		StringBuilder sb = new StringBuilder();
@@ -48,8 +56,7 @@ public class Utils {
 			throwAsUnchecked(e);
 		}
 	}
-	
-		
+			
 	@SuppressWarnings("unchecked")
 	public static <T> T[] toGenericArray(Collection<T> collection, Class<T> type) {
 		return collection.toArray((T[]) Array.newInstance(type, collection.size()));

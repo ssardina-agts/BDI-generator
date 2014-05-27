@@ -7,7 +7,7 @@ import java.util.List;
 import rmit.agent.generation.templates.beliefset.BeliefSetSet;
 import rmit.agent.generation.templates.beliefset.BeliefSetTemplate;
 import rmit.agent.generation.templates.codeline.CodeLineTemplate;
-import rmit.utils.collections.ImmutableSet;
+import rmit.agent.generation.utils.collections.ImmutableSet;
 
 public class ContextMethodTemplate implements Serializable {
 

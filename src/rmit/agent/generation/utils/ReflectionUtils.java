@@ -1,4 +1,4 @@
-package rmit.utils;
+package rmit.agent.generation.utils;
 
 public class ReflectionUtils {
 

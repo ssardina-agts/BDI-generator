@@ -2,11 +2,11 @@ package rmit.agent.generation.generators.basic;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
-import rmit.agent.generation.GenerationUtils;
 import rmit.agent.generation.generators.BeliefSetGenerator;
 import rmit.agent.generation.generators.GPFGenerator;
-import rmit.agent.generation.generators.GPFGeneratorConfig;
+import rmit.agent.generation.generators.GeneratorProperties;
 import rmit.agent.generation.templates.ClassName;
 import rmit.agent.generation.templates.agent.PlanSet;
 import rmit.agent.generation.templates.beliefset.BeliefSetTemplate;
@@ -26,10 +26,23 @@ import rmit.agent.generation.templates.plan.GoalPostTemplate;
 import rmit.agent.generation.templates.plan.PlanTemplate;
 import rmit.agent.generation.templates.plan.PostingMethod;
 import rmit.agent.generation.templates.plan.QueryCallTemplate;
+import rmit.agent.generation.utils.Utils;
 
 public class BasicGPFGenerator implements GPFGenerator {
 	
-	protected BasicGPFGeneratorConfig config;
+	public static final String KEY_PACKAGE_NAME	= "package.name";
+	
+	public static final String KEY_N					= "gpf.nGpts";
+	public static final String KEY_DEPTH				= "gpf.depth";
+	public static final String KEY_N_GOALS_POSTED		= "gpf.goals.posted";
+	public static final String KEY_N_HANDLING_PLANS		= "gpf.plans.handling";
+	public static final String KEY_N_CONTEXT_QS			= "gpf.context.queries";
+
+	private int nGpts;
+	private int treeDepth;
+	private int numPostedGoals;
+	private int numHandledPlans;
+	private int numContextConditionQueries;
 	
 	protected BeliefSetGenerator bsBuilder;
 	
@@ -41,16 +54,20 @@ public class BasicGPFGenerator implements GPFGenerator {
 	protected String gptPackageName;
 	protected String topLevelPackageName;
 	
-	public BasicGPFGenerator(BasicGPFGeneratorConfig config, BeliefSetGenerator bsGenerator, String packageName) {
-		this.topLevelPackageName = packageName;
-		bsBuilder = bsGenerator;
-		this.config = config;
+	public BasicGPFGenerator(Properties properties) {
+		topLevelPackageName = properties.getProperty(KEY_PACKAGE_NAME);
+		load(properties);
 		reset();
 	}
 	
-	@Override
-	public GPFGeneratorConfig getConfig() {
-		return config;
+	protected void load(Properties properties) {
+		nGpts = Integer.valueOf(properties.getProperty(KEY_N));
+		treeDepth = Integer.valueOf(properties.getProperty(KEY_DEPTH));
+		numPostedGoals = Integer.valueOf(properties.getProperty(KEY_N_GOALS_POSTED));
+		numHandledPlans = Integer.valueOf(properties.getProperty(KEY_N_HANDLING_PLANS));
+		numContextConditionQueries = Integer.valueOf(properties.getProperty(KEY_N_CONTEXT_QS));
+	
+		bsBuilder = GeneratorProperties.getInstance(properties, GeneratorProperties.KEY_BS_GENERATOR_CLASS);
 	}
 	
 	public void reset() {
@@ -60,17 +77,36 @@ public class BasicGPFGenerator implements GPFGenerator {
 		nextBeliefSetNum = 0;
 	}
 	
+	public int getNumTrees() {
+		return nGpts;
+	}
+
+	public int getTreeDepth() {
+		return treeDepth;
+	}
+
+	public int getNumPostedGoals() {
+		return numPostedGoals;
+	}
+
+	public int getNumHandledPlans() {
+		return numHandledPlans;
+	}
+
+	public int getNumContextConditionQueries() {
+		return numContextConditionQueries;
+	}
+	
 	public IntentionSet getIntentionSet() {
-		IntentionTemplate[] its = new IntentionTemplate[config.getNumTrees()];
-		for (int i = 0; i < config.getNumTrees(); i++)
+		IntentionTemplate[] its = new IntentionTemplate[getNumTrees()];
+		for (int i = 0; i < getNumTrees(); i++)
 			its[i] = getIntention();
 
 		return new IntentionSet(its);
 	}
 	
 	protected IntentionTemplate getIntention() {
-		gptPackageName = topLevelPackageName + ".gpt_" + GenerationUtils.format(nextIntentionNum++);
-		System.out.println(gptPackageName);
+		gptPackageName = topLevelPackageName + ".gpt_" + Utils.format(nextIntentionNum++);
 		GoalTemplate topLevelGoal = getGoalTemplate();
 		
 		List<PlanTemplate> allPlans = new ArrayList<PlanTemplate>();
@@ -79,12 +115,12 @@ public class BasicGPFGenerator implements GPFGenerator {
 		List<PlanTemplate> currentPlans = new ArrayList<PlanTemplate>();
 		
 		currentGoals.add(topLevelGoal);
-		int depth = config.getTreeDepth();
+		int depth = getTreeDepth();
 		for (int i = 0; i < depth; i++) {
 			for (GoalTemplate gt : currentGoals) {
-				int nHandling = config.getNumHandledPlans();
+				int nHandling = getNumHandledPlans();
 				for (int p = 0; p < nHandling; p++) {
-					int nPosted = (i == depth - 1) ? 0 : config.getNumPostedGoals();
+					int nPosted = (i == depth - 1) ? 0 : getNumPostedGoals();
 					PlanTemplate pt = getPlanTemplate(gt, nPosted);
 					currentPlans.add(pt);
 				}
@@ -103,7 +139,7 @@ public class BasicGPFGenerator implements GPFGenerator {
 	}
 	
 	protected PlanTemplate getPlanTemplate(GoalTemplate handledGoal, int nPostedGoals) {
-		ClassName cn = new ClassName(gptPackageName, "Plan_" + GenerationUtils.format(nextPlanNum++));
+		ClassName cn = new ClassName(gptPackageName, "Plan_" + Utils.format(nextPlanNum++));
 		ContextMethodTemplate context = getContextMethod();
 
 		GoalPostTemplate[] posted = new GoalPostTemplate[nPostedGoals];
@@ -116,13 +152,13 @@ public class BasicGPFGenerator implements GPFGenerator {
 	}
 	
 	protected ContextMethodTemplate getContextMethod() {
-		int nQueries = config.getNumContextConditionQueries();
+		int nQueries = getNumContextConditionQueries();
 		QueryCallTemplate[] queries = new QueryCallTemplate[nQueries];
 		for (int q = 0; q < nQueries; q++) {
-			BeliefSetTemplate bst = bsBuilder.getBeliefSet(new ClassName(gptPackageName, "BeliefSet_" + GenerationUtils.format(nextBeliefSetNum++)));
+			BeliefSetTemplate bst = bsBuilder.getBeliefSet(new ClassName(gptPackageName, "BeliefSet_" + Utils.format(nextBeliefSetNum++)));
 			//pick random query
 			QuerySet qs = bst.getQueries();
-			QueryTemplate qt = qs.getItems()[GenerationUtils.getRandomInt(0, qs.getSize()-1)];
+			QueryTemplate qt = qs.getItems()[Utils.getRandomInt(0, qs.getSize()-1)];
 			
 			ParameterTemplate<?>[] ps = qt.getParameters();
 			Object[] args = new Object[ps.length];
@@ -132,7 +168,7 @@ public class BasicGPFGenerator implements GPFGenerator {
 				}
 				else {
 					FieldRange<?> fr = ps[i].getField().getRange();
-					int valueIndex = GenerationUtils.getRandomInt(0, fr.getNumValues()-1);
+					int valueIndex = Utils.getRandomInt(0, fr.getNumValues()-1);
 					args[i] = fr.getValueAtIndex(valueIndex);
 				}
 			}
@@ -143,8 +179,9 @@ public class BasicGPFGenerator implements GPFGenerator {
 	}
 	
 	protected GoalTemplate getGoalTemplate() {
-		ClassName cn = new ClassName(gptPackageName, "Event_" + GenerationUtils.format(nextGoalNum++));
+		ClassName cn = new ClassName(gptPackageName, "Event_" + Utils.format(nextGoalNum++));
 		return new GoalTemplate(cn, EventType.BDI_GOAL_EVENT);
 	}
+	
 	
 }

@@ -3,7 +3,6 @@ package rmit.agent.generation.templates.agent;
 import java.util.ArrayList;
 import java.util.List;
 
-import rmit.agent.generation.JackCodeUtils;
 import rmit.agent.generation.templates.ClassName;
 import rmit.agent.generation.templates.ImportSet;
 import rmit.agent.generation.templates.JackSourceFile;
@@ -17,6 +16,7 @@ import rmit.agent.generation.templates.intention.IntentionTemplate;
 import rmit.agent.generation.templates.plan.GoalPostSet;
 import rmit.agent.generation.templates.plan.GoalPostTemplate;
 import rmit.agent.generation.templates.plan.PlanTemplate;
+import rmit.agent.generation.writer.JackCodeUtils;
 
 public class AgentTemplate extends JackSourceFile {
 

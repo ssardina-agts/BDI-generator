@@ -3,7 +3,6 @@ package rmit.agent.generation.templates.plan;
 import java.util.ArrayList;
 import java.util.List;
 
-import rmit.agent.generation.JackCodeUtils;
 import rmit.agent.generation.templates.ClassName;
 import rmit.agent.generation.templates.ImportSet;
 import rmit.agent.generation.templates.JackSourceFile;
@@ -12,6 +11,7 @@ import rmit.agent.generation.templates.beliefset.BeliefSetSet;
 import rmit.agent.generation.templates.beliefset.BeliefSetTemplate;
 import rmit.agent.generation.templates.codeline.CodeLineTemplate;
 import rmit.agent.generation.templates.goal.GoalTemplate;
+import rmit.agent.generation.writer.JackCodeUtils;
 
 public class PlanTemplate extends JackSourceFile {
 

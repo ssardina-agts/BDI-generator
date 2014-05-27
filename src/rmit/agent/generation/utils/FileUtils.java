@@ -1,4 +1,4 @@
-package rmit.utils;
+package rmit.agent.generation.utils;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -24,6 +24,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class FileUtils {
 
@@ -179,5 +180,8 @@ public class FileUtils {
 		} 
 	}
 
+	public static Path getRandomTempDirectory() {
+		return Paths.get(System.getProperty("user.dir"), "temp_" + Math.abs(new Random().nextInt()));
+	}
 	
 }

@@ -2,9 +2,9 @@ package rmit.agent.generation.generators.basic;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import rmit.agent.generation.generators.BeliefSetGenerator;
-import rmit.agent.generation.generators.BeliefSetGeneratorConfig;
 import rmit.agent.generation.templates.ClassName;
 import rmit.agent.generation.templates.beliefset.BeliefSetTemplate;
 import rmit.agent.generation.templates.beliefset.BeliefSetWorldType;
@@ -18,31 +18,42 @@ import rmit.agent.generation.templates.beliefset.field.IntegerRange;
 
 public class BasicBeliefSetGenerator extends BeliefSetGenerator {
 
-	private BeliefSetGeneratorConfig config;
+	public static final String KEY_N_KEYS = "bs.keys";
+	public static final String KEY_N_VALS = "bs.vals";
+
+	public static final String KEY_KEYS_DOMAIN = "bs.keys.domain";
+	public static final String KEY_VALS_DOMAIN = "bs.vals.domain";
 	
-	public BasicBeliefSetGenerator(BeliefSetGeneratorConfig config) {
-		this.config = config;
+	private int nKeys;
+	private int nValues;
+	private int keyDomainSize;
+	private int valueDomainSize;
+	
+	public BasicBeliefSetGenerator(Properties properties) {
+		load(properties);
 	}
 	
-	@Override
-	public BeliefSetGeneratorConfig getConfig() {
-		return config;
+	protected void load(Properties properties) {
+		nKeys = Integer.valueOf(properties.getProperty(KEY_N_KEYS));
+		nValues = Integer.valueOf(properties.getProperty(KEY_N_VALS));
+		keyDomainSize = Integer.valueOf(properties.getProperty(KEY_KEYS_DOMAIN));	
+		valueDomainSize = Integer.valueOf(properties.getProperty(KEY_VALS_DOMAIN));
 	}
 	
 	@Override
 	public BeliefSetTemplate getBeliefSet(ClassName cn) {
 		BeliefSetWorldType worldType = BeliefSetWorldType.CLOSED_WORLD;
 
-		int nKeys = config.getNumKeys();
-		int nValues = config.getNumValues();
+		int nKeys = getNumKeys();
+		int nValues = getNumValues();
 		
 		List<FieldTemplate<?>> fields = new ArrayList<FieldTemplate<?>>();
 		for (int i = 0; i < nKeys; i++) {
-			int domainSize = config.getKeyDomainSize();
+			int domainSize = getKeyDomainSize();
 			fields.add(new FieldTemplate<Integer>(cn, Integer.toString(i), FieldType.KEY, Integer.class, new IntegerRange(0, domainSize)));
 		}
 		for (int i = 0; i < nValues; i++) {
-			int domainSize = config.getValueDomainSize();
+			int domainSize = getValueDomainSize();
 			fields.add(new FieldTemplate<Integer>(cn, Integer.toString(i), FieldType.VALUE, Integer.class, new IntegerRange(0, domainSize)));
 		}
 		
@@ -57,6 +68,22 @@ public class BasicBeliefSetGenerator extends BeliefSetGenerator {
 		
 		return new BeliefSetTemplate(cn, worldType, fieldSet, querySet);
 		
+	}
+	
+	public int getNumKeys() {
+		return nKeys;
+	}
+	
+	public int getNumValues() {
+		return nValues;
+	}
+	
+	public int getKeyDomainSize() {
+		return keyDomainSize;
+	}
+	
+	public int getValueDomainSize() {
+		return valueDomainSize;
 	}
 	
 }

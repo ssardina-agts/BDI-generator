@@ -5,7 +5,7 @@ import java.io.Serializable;
 import rmit.agent.generation.templates.ClassName;
 import rmit.agent.generation.templates.beliefset.ParameterTemplate;
 import rmit.agent.generation.templates.beliefset.VariableType;
-import rmit.utils.ReflectionUtils;
+import rmit.agent.generation.utils.ReflectionUtils;
 
 public class FieldTemplate<T> implements Comparable<FieldTemplate<T>>, Serializable {
 

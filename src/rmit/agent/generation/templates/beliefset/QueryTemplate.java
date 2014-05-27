@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import rmit.agent.generation.JackCodeUtils;
 import rmit.agent.generation.templates.beliefset.field.FieldSet;
 import rmit.agent.generation.templates.beliefset.field.FieldTemplate;
+import rmit.agent.generation.writer.JackCodeUtils;
 
 public class QueryTemplate implements Serializable {
 

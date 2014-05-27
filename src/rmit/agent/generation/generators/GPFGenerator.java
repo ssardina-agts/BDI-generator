@@ -6,6 +6,4 @@ public interface GPFGenerator {
 	
 	public IntentionSet getIntentionSet();
 	
-	public GPFGeneratorConfig getConfig();
-	
 }

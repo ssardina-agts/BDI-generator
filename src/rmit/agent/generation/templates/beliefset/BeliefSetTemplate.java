@@ -3,13 +3,13 @@ package rmit.agent.generation.templates.beliefset;
 import java.util.ArrayList;
 import java.util.List;
 
-import rmit.agent.generation.JackCodeUtils;
 import rmit.agent.generation.templates.ClassName;
 import rmit.agent.generation.templates.ImportSet;
 import rmit.agent.generation.templates.JackSourceFile;
 import rmit.agent.generation.templates.JackSourceFileType;
 import rmit.agent.generation.templates.beliefset.field.FieldSet;
 import rmit.agent.generation.templates.beliefset.field.FieldTemplate;
+import rmit.agent.generation.writer.JackCodeUtils;
 
 public class BeliefSetTemplate extends JackSourceFile {
 

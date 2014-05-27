@@ -1,11 +1,12 @@
-package rmit.utils.collections;
+package rmit.agent.generation.utils.collections;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import rmit.utils.Utils;
+
+import rmit.agent.generation.utils.Utils;
 
 public class ImmutableSet<T> implements Iterable<T>, Serializable {
 

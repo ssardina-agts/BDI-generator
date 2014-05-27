@@ -2,7 +2,7 @@ package rmit.agent.generation.templates.goal;
 
 import java.io.Serializable;
 
-import rmit.agent.generation.JackCodeUtils;
+import rmit.agent.generation.writer.JackCodeUtils;
 /**
  * Still very simple!
  * 

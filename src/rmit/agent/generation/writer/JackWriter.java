@@ -10,7 +10,6 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import rmit.agent.generation.JackCodeUtils;
 import rmit.agent.generation.templates.ClassName;
 import rmit.agent.generation.templates.JackSourceFile;
 import rmit.agent.generation.templates.agent.AgentTemplate;
@@ -28,7 +27,7 @@ import rmit.agent.generation.templates.plan.PlanTemplate;
 import rmit.agent.generation.templates.plan.PostingMethod;
 import rmit.agent.generation.templates.plan.QueryArg;
 import rmit.agent.generation.templates.plan.QueryCallTemplate;
-import rmit.utils.FileUtils;
+import rmit.agent.generation.utils.FileUtils;
 
 public class JackWriter {
 
@@ -39,12 +38,12 @@ public class JackWriter {
 	private Path rootDir;
 	private CodeBuilder cb;
 	
-	public JackWriter() {
+	public JackWriter(Path rootDir) {
 		cb = new CodeBuilder();
+		this.rootDir = rootDir;
 	}
 	
-	public void recursivelyWriteAgent(Path rootDir, List<AgentTemplate> agents) {
-		this.rootDir = rootDir;
+	public void recursivelyWriteAgent(List<AgentTemplate> agents) {		
 		Set<GoalTemplate> goals = new HashSet<GoalTemplate>();
 		Set<BeliefSetTemplate> beliefs = new HashSet<BeliefSetTemplate>();
 		Set<PlanTemplate> plans = new HashSet<PlanTemplate>();

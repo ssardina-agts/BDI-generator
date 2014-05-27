@@ -1,6 +1,6 @@
 package rmit.agent.generation.templates.goal;
 
-import rmit.utils.collections.ImmutableSet;
+import rmit.agent.generation.utils.collections.ImmutableSet;
 
 public class PostingMethodSet extends ImmutableSet<PostingMethodTemplate> {
 

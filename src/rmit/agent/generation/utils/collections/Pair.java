@@ -1,4 +1,4 @@
-package rmit.utils.collections;
+package rmit.agent.generation.utils.collections;
 
 public class Pair<F, S> {
 	

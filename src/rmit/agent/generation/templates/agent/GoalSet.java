@@ -1,7 +1,7 @@
 package rmit.agent.generation.templates.agent;
 
 import rmit.agent.generation.templates.goal.GoalTemplate;
-import rmit.utils.collections.ImmutableSet;
+import rmit.agent.generation.utils.collections.ImmutableSet;
 
 public class GoalSet extends ImmutableSet<GoalTemplate> {
 

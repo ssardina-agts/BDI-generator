@@ -1,4 +1,4 @@
-package rmit.agent.generation.writer;
+package rmit.agent.generation.compiler;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,7 +10,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import javax.tools.JavaCompiler;
 import javax.tools.JavaCompiler.CompilationTask;
 import javax.tools.JavaFileObject;
@@ -20,31 +19,31 @@ import javax.tools.ToolProvider;
 
 import org.apache.log4j.Logger;
 
-import rmit.utils.FileUtils;
-import rmit.utils.Utils;
+import rmit.agent.generation.utils.FileUtils;
+import rmit.agent.generation.utils.Utils;
 
-public class JackCompiler {
+public class CompilerTools {
 
-	private static final Logger logger = Logger.getLogger(JackCompiler.class);
+	private static final Logger logger = Logger.getLogger(CompilerTools.class);
 	
 	private static final String CP_PATH_DIVIDER = ";";
 	
 	private static final File LIB_PATH = Paths.get(System.getProperty("user.dir"), "lib").toFile();
 	
-	public static void compileJack(Path jackPath, Path javaPath, Path outputPath, boolean recursive) {
+	public static void compileJack(Path jackPath, Path javaPath, boolean recursive, File ... classPathEntries) {
 		try {
 			logger.debug("Compiling " + jackPath);
 			Files.createDirectories(javaPath);
-			//Files.createDirectories(outputPath);
 			
-			//put all files in lib dir onto the classpath
-			File[] cpJars = LIB_PATH.listFiles();
+			
+
 			StringBuilder cpBuilder = new StringBuilder();
 			cpBuilder.append("\"");
-			for (File jar : cpJars)
+			//put all jars etc onto the classpath
+			for (File jar : classPathEntries)
 				cpBuilder.append(jar.getAbsolutePath() + ";");
-			cpBuilder.append(outputPath + ";");
-			cpBuilder.append(javaPath + ";");
+			//cpBuilder.append(outputPath + ";");
+			//cpBuilder.append(javaPath + ";");
 			//now add everything in the current class path
 			cpBuilder.append(System.getProperty("java.class.path"));
 			
@@ -53,8 +52,8 @@ public class JackCompiler {
 			
 			//build process
 			ProcessBuilder pb = new ProcessBuilder();
-			String[] command = { "java", "-cp", cp, "aos.main.JackBuild", (recursive ? "-r" : ""), "-d", javaPath.toString(), "-dc", outputPath.toString(), "-cp", cp };
-			//String[] command = { "java", "-Xmx1024m", "-cp", cp, "aos.main.JackBuild", (recursive ? "-r" : ""), "-d", javaPath.toString(), "-nc" };
+			//String[] command = { "java", "-cp", cp, "aos.main.JackBuild", (recursive ? "-r" : ""), "-d", javaPath.toString(), "-dc", outputPath.toString(), "-cp", cp };
+			String[] command = { "java", "-cp", cp, "aos.main.JackBuild", (recursive ? "-r" : ""), "-d", javaPath.toString(), "-cp", cp, "-nc" };
 			pb.command(command);
 			logger.debug("Running aos.main.JackBuild: " + pb.command());
 			pb.directory(jackPath.toFile());
@@ -72,6 +71,8 @@ public class JackCompiler {
 				logger.error("JackBuild returned " + rc);
 				throw new IllegalArgumentException("Cannot compile JACK code");
 			}
+			else
+				logger.debug("JACK compiled ok.");
 		}
 		catch (IOException e) {
 			logger.error("Error compiling JACK code", e);
@@ -97,9 +98,9 @@ public class JackCompiler {
 		    
 	    	//get source files
 			List<File> sourceFileList = new ArrayList<File>();
-			for (Path sourcePath : FileUtils.getAllFiles(javaPath.toFile())) {
+			for (Path sourcePath : FileUtils.getAllFiles(javaPath.toFile()))
 				sourceFileList.add(sourcePath.toFile());
-			}
+			
 			Iterable<? extends JavaFileObject> compUnits = fileManager.getJavaFileObjectsFromFiles(sourceFileList);
 			
 			//put all files in lib dir onto the classpath
@@ -111,27 +112,27 @@ public class JackCompiler {
 			for (String cpEntry : System.getProperty("java.class.path").split(CP_PATH_DIVIDER))
 				cpList.add(new File(cpEntry));
 			
-
+			//run compiler
 			fileManager.setLocation(StandardLocation.CLASS_PATH, cpList);		
 			fileManager.setLocation(StandardLocation.CLASS_OUTPUT, Arrays.asList(outputPath.toFile()));
 			CompilationTask task = compiler.getTask(null, fileManager, null, null, null, compUnits);
-			if(!task.call()) {
+			if(!task.call()) 
 				throw new IllegalArgumentException("Cannot compile Java code!");
-			}
 			else
 				logger.debug("Java compiled ok.");
 				
 			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	    
-		
+		} 
+	    catch (IOException e) {
+			logger.error("Error compiling Java code", e);
+			Utils.throwAsUnchecked(e);
+		}		
 	}
 	
 	public static void jar(Path jarFile, Path directory ) {
 		try {
+			logger.debug("Packaging directory " + directory + " into jar file " + jarFile);
+			
 			File pwd = directory.toFile();			
 			ProcessBuilder pb = new ProcessBuilder();
 			String[] command = {"jar", "cf0", jarFile.toString(), "*"};
@@ -149,16 +150,17 @@ public class JackCompiler {
 				logger.error("Jar process returned " + rc);
 				throw new IllegalArgumentException("Cannot build " + jarFile);
 			}
+			else
+				logger.debug("Jar created ok.");
 		}
 		catch (IOException e) {
-			logger.error("Error compiling JACK code", e);
+			logger.error("Error building jar", e);
 			Utils.throwAsUnchecked(e);
 		} 
 		catch (InterruptedException e) {
-			logger.error("Error compiling JACK code", e);
+			logger.error("Error building jar", e);
 			Utils.throwAsUnchecked(e);
 		}
 	}
-	
 	
 }

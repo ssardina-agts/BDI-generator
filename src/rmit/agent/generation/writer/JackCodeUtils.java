@@ -1,7 +1,7 @@
-package rmit.agent.generation;
+package rmit.agent.generation.writer;
 
 import rmit.agent.generation.templates.ClassName;
-import rmit.utils.ReflectionUtils;
+import rmit.agent.generation.utils.ReflectionUtils;
 
 public class JackCodeUtils {
 
