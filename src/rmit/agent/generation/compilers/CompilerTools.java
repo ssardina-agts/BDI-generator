@@ -1,4 +1,4 @@
-package rmit.agent.generation.compiler;
+package rmit.agent.generation.compilers;
 
 import java.io.BufferedReader;
 import java.io.File;

@@ -1,4 +1,4 @@
-package rmit.agent.generation.writer;
+package rmit.agent.generation.writers;
 
 
 public class CodeBuilder {

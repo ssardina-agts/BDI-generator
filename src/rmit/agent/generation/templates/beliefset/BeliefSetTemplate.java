@@ -9,7 +9,7 @@ import rmit.agent.generation.templates.JackSourceFile;
 import rmit.agent.generation.templates.JackSourceFileType;
 import rmit.agent.generation.templates.beliefset.field.FieldSet;
 import rmit.agent.generation.templates.beliefset.field.FieldTemplate;
-import rmit.agent.generation.writer.JackCodeUtils;
+import rmit.agent.generation.writers.JackCodeUtils;
 
 public class BeliefSetTemplate extends JackSourceFile {
 

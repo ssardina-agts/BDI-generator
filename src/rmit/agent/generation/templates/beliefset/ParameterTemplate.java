@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import rmit.agent.generation.templates.beliefset.field.FieldTemplate;
 import rmit.agent.generation.templates.plan.QueryArg;
-import rmit.agent.generation.writer.JackCodeUtils;
+import rmit.agent.generation.writers.JackCodeUtils;
 
 public class ParameterTemplate<T> implements Serializable {
 

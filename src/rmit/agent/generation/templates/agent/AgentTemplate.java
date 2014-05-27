@@ -16,7 +16,7 @@ import rmit.agent.generation.templates.intention.IntentionTemplate;
 import rmit.agent.generation.templates.plan.GoalPostSet;
 import rmit.agent.generation.templates.plan.GoalPostTemplate;
 import rmit.agent.generation.templates.plan.PlanTemplate;
-import rmit.agent.generation.writer.JackCodeUtils;
+import rmit.agent.generation.writers.JackCodeUtils;
 
 public class AgentTemplate extends JackSourceFile {
 

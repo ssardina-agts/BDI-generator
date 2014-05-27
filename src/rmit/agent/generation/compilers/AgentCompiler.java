@@ -1,4 +1,4 @@
-package rmit.agent.generation.compiler;
+package rmit.agent.generation.compilers;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.util.List;
 import rmit.agent.generation.templates.agent.AgentTemplate;
 import rmit.agent.generation.utils.FileUtils;
 import rmit.agent.generation.utils.Utils;
-import rmit.agent.generation.writer.JackWriter;
+import rmit.agent.generation.writers.JackWriter;
 
 public class AgentCompiler {
 

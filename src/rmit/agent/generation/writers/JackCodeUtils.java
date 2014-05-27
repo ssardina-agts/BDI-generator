@@ -1,4 +1,4 @@
-package rmit.agent.generation.writer;
+package rmit.agent.generation.writers;
 
 import rmit.agent.generation.templates.ClassName;
 import rmit.agent.generation.utils.ReflectionUtils;

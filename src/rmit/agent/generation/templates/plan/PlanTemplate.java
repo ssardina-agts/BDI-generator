@@ -11,7 +11,7 @@ import rmit.agent.generation.templates.beliefset.BeliefSetSet;
 import rmit.agent.generation.templates.beliefset.BeliefSetTemplate;
 import rmit.agent.generation.templates.codeline.CodeLineTemplate;
 import rmit.agent.generation.templates.goal.GoalTemplate;
-import rmit.agent.generation.writer.JackCodeUtils;
+import rmit.agent.generation.writers.JackCodeUtils;
 
 public class PlanTemplate extends JackSourceFile {
 

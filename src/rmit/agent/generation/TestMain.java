@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Properties;
 
-import rmit.agent.generation.compiler.AgentCompiler;
+import rmit.agent.generation.compilers.AgentCompiler;
 import rmit.agent.generation.generators.AgentGenerator;
 import rmit.agent.generation.generators.GeneratorProperties;
 import rmit.agent.generation.templates.agent.AgentTemplate;

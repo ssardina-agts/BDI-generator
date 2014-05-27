@@ -7,7 +7,7 @@ import java.util.List;
 
 import rmit.agent.generation.templates.beliefset.field.FieldSet;
 import rmit.agent.generation.templates.beliefset.field.FieldTemplate;
-import rmit.agent.generation.writer.JackCodeUtils;
+import rmit.agent.generation.writers.JackCodeUtils;
 
 public class QueryTemplate implements Serializable {
 
