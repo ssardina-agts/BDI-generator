@@ -16,10 +16,10 @@ public class AgentCompiler {
 	protected List<AgentTemplate> agentTemplates;
 	protected String packageName;
 	
-	private Path rootDir;
-	private Path jackDir;
-	private Path javaDir;
-	private Path classDir;
+	protected Path rootDir;
+	protected Path jackDir;
+	protected Path javaDir;
+	protected Path classDir;
 	
 	public AgentCompiler(List<AgentTemplate> agentTemplates, String packageName) {
 		this.agentTemplates = agentTemplates;
@@ -28,8 +28,7 @@ public class AgentCompiler {
 		rootDir = FileUtils.getRandomTempDirectory();
 		jackDir = Paths.get(rootDir.toString(), "jack_src");
 		javaDir = Paths.get(rootDir.toString(), "java_src");
-		classDir = Paths.get(rootDir.toString(), "bin");
-		
+		classDir = Paths.get(rootDir.toString());	
 	}
 	
 	public void clean() {
@@ -41,7 +40,6 @@ public class AgentCompiler {
 	}
 
 	public void writeJackCode() {
-		clean();
 		rootDir.toFile().mkdirs();
 		jackDir.toFile().mkdirs();
 		
@@ -49,13 +47,12 @@ public class AgentCompiler {
 		jackWriter.recursivelyWriteAgent(agentTemplates);
 	}
 
-	public void compileJackToJava() {
+	public void compileJackToJava(File ... classPathEntries) {
 		writeJackCode();
 		javaDir.toFile().mkdirs();
 		
 		String[] packageDirPath = packageName.split("\\.");
 		Path topLevelPath = Paths.get(jackDir.toString(), packageDirPath);
-		System.out.println(topLevelPath);
 		for (File subDir : topLevelPath.toFile().listFiles()) {
 			if (subDir.isDirectory()) {
 //				CompilerTools.compileJack(Paths.get(subDir.toURI()), javaDir, true);
@@ -65,18 +62,34 @@ public class AgentCompiler {
 
 	}
 	
-	public void compileJava() {
+	public void compileJava(File ... classPathEntries) {
 		compileJackToJava();
 		classDir.toFile().mkdirs();
 		
 		CompilerTools.compileJava(javaDir, classDir);
 	}
 	
-	public void makeJar(String jarName) {
+	public void makeJar(String jarName, File ... classPathEntries) {
 		compileJava();
 		
-		Path jarFile = Paths.get(rootDir.toString(), jarName);
+		Path jarFile = Paths.get(jarName);
 		CompilerTools.jar(jarFile, rootDir);
+	}
+
+	public Path getRootDir() {
+		return rootDir;
+	}
+
+	public Path getJackDir() {
+		return jackDir;
+	}
+
+	public Path getJavaDir() {
+		return javaDir;
+	}
+
+	public Path getClassDir() {
+		return classDir;
 	}
 
 }

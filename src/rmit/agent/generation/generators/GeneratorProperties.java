@@ -10,6 +10,7 @@ public class GeneratorProperties extends Properties {
 
 	private static final long serialVersionUID = 1L;
 
+	public static final String KEY_AGENT_CLASS_NAME			= "agent.class.name";
 	public static final String KEY_PACKAGE_NAME				= "package.name";
 	public static final String KEY_JAR_NAME					= "jar.name";
 	

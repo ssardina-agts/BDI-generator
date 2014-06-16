@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,28 +25,27 @@ public class CompilerTools {
 
 	private static final Logger logger = Logger.getLogger(CompilerTools.class);
 	
-	private static final String CP_PATH_DIVIDER = ";"; //replace with System.getProperty("path.separator"); ???
+	//private static final String CP_PATH_DIVIDER = ";"; //replace with System.getProperty("path.separator"); ???
 	
-	private static final File LIB_PATH = Paths.get(System.getProperty("user.dir"), "lib").toFile();
+	private static final String CP_PATH_DIVIDER = System.getProperty("path.separator");
+	
 	
 	public static void compileJack(Path jackPath, Path javaPath, boolean recursive, File ... classPathEntries) {
 		try {
 			logger.debug("Compiling " + jackPath);
 			Files.createDirectories(javaPath);
 			
-			
-
 			StringBuilder cpBuilder = new StringBuilder();
-			cpBuilder.append("\"");
+			//cpBuilder.append("\"");
 			//put all jars etc onto the classpath
 			for (File jar : classPathEntries)
-				cpBuilder.append(jar.getAbsolutePath() + ";");
-			//cpBuilder.append(outputPath + ";");
-			//cpBuilder.append(javaPath + ";");
+				cpBuilder.append(jar.getAbsolutePath() + CP_PATH_DIVIDER);
+			//cpBuilder.append(outputPath + CP_PATH_DIVIDER);
+			//cpBuilder.append(javaPath + CP_PATH_DIVIDER);
 			//now add everything in the current class path
 			cpBuilder.append(System.getProperty("java.class.path"));
 			
-			cpBuilder.append("\"");
+			//cpBuilder.append("\"");
 			String cp = cpBuilder.toString();
 			
 			//build process
@@ -84,7 +82,7 @@ public class CompilerTools {
 		}
 	}
 	
-	public static void compileJava(Path javaPath, Path outputPath) {		
+	public static void compileJava(Path javaPath, Path outputPath, File ... classPathEntries) {		
 	    try {
 	    	logger.debug("Compiling from source directory " + javaPath);
 	    	
@@ -103,9 +101,9 @@ public class CompilerTools {
 			
 			Iterable<? extends JavaFileObject> compUnits = fileManager.getJavaFileObjectsFromFiles(sourceFileList);
 			
-			//put all files in lib dir onto the classpath
+			//put all cp jars onto the classpath
 			List<File> cpList = new ArrayList<File>();
-			for (File jar : LIB_PATH.listFiles()) 
+			for (File jar : classPathEntries) 
 				cpList.add(jar);
 			
 			//now add everything in the current class path
@@ -116,6 +114,7 @@ public class CompilerTools {
 			fileManager.setLocation(StandardLocation.CLASS_PATH, cpList);		
 			fileManager.setLocation(StandardLocation.CLASS_OUTPUT, Arrays.asList(outputPath.toFile()));
 			CompilationTask task = compiler.getTask(null, fileManager, null, null, null, compUnits);
+			
 			if(!task.call()) 
 				throw new IllegalArgumentException("Cannot compile Java code!");
 			else
@@ -129,7 +128,7 @@ public class CompilerTools {
 		}		
 	}
 	
-	public static void jar(Path jarFile, Path directory ) {
+	public static void jar(Path jarFile, Path directory) {
 		try {
 			logger.debug("Packaging directory " + directory + " into jar file " + jarFile);
 			

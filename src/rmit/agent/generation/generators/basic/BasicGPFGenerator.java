@@ -29,9 +29,7 @@ import rmit.agent.generation.templates.plan.QueryCallTemplate;
 import rmit.agent.generation.utils.Utils;
 
 public class BasicGPFGenerator implements GPFGenerator {
-	
-	public static final String KEY_PACKAGE_NAME	= "package.name";
-	
+		
 	public static final String KEY_N					= "gpf.nGpts";
 	public static final String KEY_DEPTH				= "gpf.depth";
 	public static final String KEY_N_GOALS_POSTED		= "gpf.goals.posted";
@@ -55,7 +53,7 @@ public class BasicGPFGenerator implements GPFGenerator {
 	protected String topLevelPackageName;
 	
 	public BasicGPFGenerator(Properties properties) {
-		topLevelPackageName = properties.getProperty(KEY_PACKAGE_NAME);
+		topLevelPackageName = properties.getProperty(GeneratorProperties.KEY_PACKAGE_NAME);
 		load(properties);
 		reset();
 	}

@@ -14,7 +14,7 @@ import rmit.agent.generation.templates.intention.IntentionSet;
 
 public class BasicAgentGenerator implements AgentGenerator {
 
-	public static final String KEY_AGENT_CLASS_NAME	= "agent.class.name";
+	
 	
 	protected String packageName; 
 
@@ -28,7 +28,7 @@ public class BasicAgentGenerator implements AgentGenerator {
 	}
 
 	protected void load(Properties properties) {
-		agentTypeName = properties.getProperty(BasicAgentGenerator.KEY_AGENT_CLASS_NAME);		
+		agentTypeName = properties.getProperty(GeneratorProperties.KEY_AGENT_CLASS_NAME);		
 		gpfGenerator = GeneratorProperties.getInstance(properties, GeneratorProperties.KEY_GPF_GENERATOR_CLASS);
 	}
 	
