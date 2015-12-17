@@ -26,8 +26,13 @@ public abstract class JackSourceFile implements Serializable {
 	}
 	
 	public Path getSourceFile(Path rootdir) {
+		String[] path = className.getPackageName().split("\\.");
+		StringBuilder sb = new StringBuilder();
+		for (String pathElem : path)
+			sb.append(pathElem + System.getProperty("file.separator"));
+		
 		return Paths.get(rootdir.toString(), //root
-				className.getPackageName().replaceAll("\\.", System.getProperty("file.separator")), //path
+				sb.toString(),
 				className.getClassName() + "." + sourceFileType.getFileExtension()); //file name
 	}
 	
